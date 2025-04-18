@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>קנבס תיקונים</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📝 דוח תיקונים אינטראקטיבי</h1>
+
+  <!-- טקסטים מקוריים -->
+  <section>
+    <h2>טקסט מקורי</h2>
+    <p id="original-text"></p>
+
+    <h2>טקסט ערוך</h2>
+    <p id="edited-text"></p>
+  </section>
+
+  <!-- רשימת שינויים -->
+  <section>
+    <h2>רשימת שינויים</h2>
+
+    <!-- 🔘 כפתור סימון בראש הדוח -->
+    <div id="select-controls">
+      <button id="toggle-select-mode">🔘 מצב סימון</button>
+    </div>
+
+    <!-- כאן יופיעו כל השינויים -->
+    <div id="changes-container"></div>
+
+    <!-- ✅ ❌ כפתורים אחרי כל הדוח -->
+    <div id="action-controls">
+      <button id="approve-button">✅ אשר</button>
+      <button id="reject-button">❌ בטל</button>
+    </div>
+  </section>
+
+  <!-- אזור להזנת הערה -->
+  <section id="rejection-section" style="display: none;">
+    <h3>📝 הזן הערה לדחייה</h3>
+    <textarea id="rejection-comment" placeholder="כתוב כאן את ההסבר שלך..."></textarea>
+    <div id="rejection-checkboxes"></div>
+    <button id="submit-rejection">אשר דחייה</button>
+  </section>
+
+  <!-- תוצאה סופית -->
+  <section>
+    <h2>תוצאה סופית (נבנית אוטומטית)</h2>
+    <p id="final-text">אין עדיין תוצאה סופית.</p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
