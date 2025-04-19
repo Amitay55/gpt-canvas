@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: Interactive Edit Review API
+  version: 1.0.0
+  description: >
+    API לניהול דוח תיקונים אינטראקטיבי בצ'אט.
+    מאפשר יצירת דוח שינויים בין טקסטים, אישור/דחייה של תיקונים,
+    שליחת הערות למערכת, וקבלת גרסה סופית על בסיס אישורים.
+
+servers:
+  - url: https://your-server.com/api
+    description: השרת שלך שמטפל בפעולות (צריך להחליף לכתובת אמיתית)
+
+paths:
+  /generate-diff:
+    post:
+      operationId: generateDiff
+      summary: יצירת דוח תיקונים בין טקסט מקורי לערוך
+      tags: [Revisions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originalText:
+                  type: string
+                editedText:
+                  type: string
+              required: [originalText, editedText]
+      responses:
+        '200':
+          description: דוח תיקונים מוצלח
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiffResponse'
+
+  /suggest-fix:
+    post:
+      operationId: suggestFix
+      summary: הצעת תיקון חלופי על סמך הערה
+      tags: [Revisions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                changeId:
+                  type: string
+                userComment:
+                  type: string
+              required: [changeId, userComment]
+      responses:
+        '200':
+          description: הצעה חדשה לתיקון
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestedFix'
+
+  /apply-approved:
+    post:
+      operationId: applyApproved
+      summary: יצירת טקסט סופי מהתיקונים שאושרו
+      tags: [Revisions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originalText:
+                  type: string
+                approvedChangeIds:
+                  type: array
+                  items:
+                    type: string
+              required: [originalText, approvedChangeIds]
+      responses:
+        '200':
+          description: טקסט מעודכן
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  finalText:
+                    type: string
+
+components:
+  schemas:
+    DiffChange:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [ניסוח, פיסוק, תחביר, ניקוד, אחר]
+        original:
+          type: string
+        edited:
+          type: string
+        description:
+          type: string
+    DiffResponse:
+      type: object
+      properties:
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiffChange'
+    SuggestedFix:
+      type: object
+      properties:
+        newSuggestion:
+          type: string
+        original:
+          type: string
